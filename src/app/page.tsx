@@ -1,15 +1,39 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+
+type Item = {
+  name: string,
+  quantity: string | number
+}
 
 export default function Home() {
-  const [items, setItems] = useState([
+  const [items, setItems] = useState<Item[]>([
     { name: "Bread Slice", quantity: 2 },
     { name: "Pasta", quantity: 4 },
     { name: "Sugar", quantity: 2 }
 
   ]);
+  const [newItem, setNewItem] = useState<{name:string, quantity:string}>({ name: '', quantity: '' })
+
   const [total, setTotal] = useState(0);
+
+
+  // add items to database
+  const addItem = async (ev: React.FormEvent) => {
+    ev.preventDefault()
+    if(newItem.name !== '' && newItem.quantity !== '') {
+      setItems([...items, newItem]);
+      setNewItem({name: '', quantity: ''});
+    }
+  }
+
+  // read items from database
+
+
+  // delete items from database
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -17,14 +41,34 @@ export default function Home() {
         <h1 className="text-3xl text-center">Pantry Tracker</h1>
         <div className="bg-neutral-400 p-4 rounded-lg">
           <form className="grid grid-cols-4 items-center text-black">
-            <input className="col-span-2 p-3 border rounded-lg drop-shadow-lg" type="text" placeholder="Enter Item" />
-            <input className="col-span-1 p-3 border rounded-lg mx-3 drop-shadow-lg" type="number" placeholder="Enter Quantity" />
-            <button className="bg-cyan-400 rounded-md drop-shadow-lg hover:scale-110 hover:bg-neutral-300 transition-transform w-24 h-12 text-2xl" type="submit">+</button>
+            <input 
+              className="col-span-2 p-3 border rounded-lg drop-shadow-lg" 
+              type="text" 
+              placeholder="Enter Item"
+              value={newItem.name} 
+              onChange={(e) => setNewItem({...newItem, name: e.target.value})}
+            />
+
+            <input 
+              className="col-span-1 p-3 border rounded-lg mx-3 drop-shadow-lg" 
+              type="number" 
+              placeholder="Enter Quantity" 
+              value={newItem.quantity}
+              onChange={(e) => setNewItem({...newItem, quantity: e.target.value})} 
+            />
+
+            <button 
+              className="bg-slate-700 rounded-md drop-shadow-lg hover:scale-110 hover:bg-slate-400 transition-transform w-24 h-12 text-2xl" 
+              type="submit"
+              onClick={addItem}
+              >
+                +
+            </button>
           </form>
 
           <ul>
             {items.map((item, id) => (
-              <li key={id} className='my-4 w-full flex justify-between bg-slate-700'>
+              <li key={id} className='my-4 w-full flex justify-between bg-slate-700 rounded-lg drop-shadow-sm'>
                 <div className='p-4 w-full flex justify-between'>
                   <span className='capitalize'>{item.name}</span>
                   <span className='text-yellow-300'>x{item.quantity}</span>
@@ -33,12 +77,12 @@ export default function Home() {
               </li>
             ))}
           </ul>
-            {items.length < 1 ? ('') : (
-              <div className='flex justify-end'>
-                <span>Total: </span>
-                <span>{total}</span>
-              </div>
-            )}
+          {items.length < 1 ? ('') : (
+            <div className='flex justify-end'>
+              <span>Total: </span>
+              <span>{total}</span>
+            </div>
+          )}
 
         </div>
 
