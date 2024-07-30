@@ -22,7 +22,7 @@ export default function Home() {
   
   // read items from database
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchItems = async () => {
       const q = query(collection(db, 'items'));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const itemsArray: Item[] = [];
@@ -36,7 +36,7 @@ export default function Home() {
       return unsubscribe;
     };
 
-    fetchData().catch(console.error);
+    fetchItems().catch(console.error);
   }, []);
 
 
