@@ -1,8 +1,11 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { collection, addDoc, deleteDoc, query, onSnapshot, doc } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, query, onSnapshot, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItem, IconButton, ListItemText, ListItemSecondaryAction } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Delete, Edit, Save } from '@mui/icons-material';
 
 type Item = {
   id: string,
@@ -13,13 +16,14 @@ type Item = {
 
 
 export default function Home() {
-  const [items, setItems] = useState<Item[]>([
-
-  ]);
+  const [items, setItems] = useState<Item[]>([]);
   const [newItem, setNewItem] = useState<{ name: string, quantity: string }>({ name: '', quantity: '' })
-  
   const [total, setTotal] = useState(0);
-  
+  const [editItem, setEditItem] = useState<{ name: string; quantity: string }>({ name: '', quantity: '' })
+  const [editItemId, setEditItemId] = useState<string | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // read items from database
   useEffect(() => {
     const fetchItems = async () => {
@@ -51,6 +55,7 @@ export default function Home() {
         quantity: newItem.quantity
       })
       setNewItem({ name: '', quantity: '' });
+      setIsModalOpen(false)
     }
   }
 
@@ -59,58 +64,147 @@ export default function Home() {
     await deleteDoc(doc(db, 'items', id));
   }
 
+  const handleEditItem = (item: Item) => {
+    setEditItemId(item.id);
+    setEditItem({ name: item.name, quantity: item.quantity.toString() })
+  }
+
+  const saveEditItem = async (id: string) => {
+    await updateDoc(doc(db, 'items', id), {
+      name: editItem.name.trim(),
+      quantity: Number(editItem.quantity)
+    });
+    setEditItemId(null);
+    setEditItem({ name: '', quantity: '' })
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm">
-        <h1 className="text-3xl text-center">Pantry Tracker</h1>
-        <div className="bg-neutral-400 p-4 rounded-lg">
-          <form className="grid grid-cols-4 items-center text-black">
-            <input
-              className="col-span-2 p-3 border rounded-lg drop-shadow-lg"
-              type="text"
-              placeholder="Enter Item"
+    <div className='flex justify-center items-center min-h-[84vh] p-12'>
+      <Container className='bg-neutral-500 w-[70%] rounded-lg'>
+        <div className='flex flex-col items-center mt-4'>
+          <Button
+            className='bg-purple-500 hover:bg-slate-500'
+            variant='contained'
+            startIcon={<AddIcon />}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Add New Item
+          </Button>
+        </div>
+
+        <h1 className='text-2xl text-center'>Pantry Tracker</h1>
+
+        <Dialog
+          open={isModalOpen} onClose={() => setIsModalOpen(false)}
+        >
+          <DialogTitle>Add New Item</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Enter Item"
+              variant='outlined'
+              fullWidth
+              margin='dense'
               value={newItem.name}
               onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
             />
-
-            <input
-              className="col-span-1 p-3 border rounded-lg mx-3 drop-shadow-lg"
-              type="number"
-              placeholder="Enter Quantity"
+            <TextField
+              label="Enter Quantity"
+              variant="outlined"
+              fullWidth
+              margin="dense"
+              type='number'
               value={newItem.quantity}
               onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
             />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsModalOpen(false)} className='text-red-500'>Cancel</Button>
+            <Button onClick={addItem} className='text-purple-500' >Add Item</Button>
+          </DialogActions>
+        </Dialog>
 
-            <button
-              className="bg-slate-700 rounded-md drop-shadow-lg hover:scale-110 hover:bg-slate-400 transition-transform w-24 h-12 text-2xl"
-              type="submit"
-              onClick={addItem}
-            >
-              +
-            </button>
-          </form>
+        <List>
+          {items.map((item) => (
+            <ListItem className='flex items-center justify-between p-2' key={item.id}>
+              {editItemId === item.id ? (
 
-          <ul>
-            {items.map((item, id) => (
-              <li key={id} className='my-4 w-full flex justify-between bg-slate-700 rounded-lg drop-shadow-sm'>
-                <div className='p-4 w-full flex justify-between'>
-                  <span className='capitalize'>{item.name}</span>
-                  <span className='text-yellow-300'>x{item.quantity}</span>
-                </div>
-                <button onClick={() => deleteItem(item.id)} className='ml-8 p-4 border-l-2 border-slate-900 hover:bg-slate-900'>X</button>
-              </li>
-            ))}
-          </ul>
-          {items.length < 1 ? ('') : (
-            <div className='flex justify-end'>
-              <span>Total: </span>
-              <span>{total}</span>
-            </div>
-          )}
+                <div className='flex items-center gap-2 w-full'>
+                  <TextField
+                    label="Item Name"
+                    variant='outlined'
+                    value={editItem.name}
+                    onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
+                    sx={{
+                      '.MuiInputBase-input': {
+                        color: 'white',
+                      },
+                      '& .MuiFormLabel-root': {
+                        color: 'white',
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'white',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'white',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'white',
+                        }
+                      },
+                    }} /><TextField
+                    label="Quantity"
+                    variant='outlined'
+                    value={editItem.quantity}
+                    onChange={(e) => setEditItem({ ...editItem, quantity: e.target.value })}
+                    sx={{
+                      '.MuiInputBase-input': {
+                        color: 'white',
+                      },
+                      '& .MuiFormLabel-root': {
+                        color: 'white',
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'white',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'white',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'white',
+                        }
+                      },
+                    }} /><IconButton onClick={() => saveEditItem(item.id)}>
+                    <Save className='text-white drop-shadow-md hover:scale-110 transition-transform' />
+                  </IconButton></div>
 
-        </div>
+              ) : (
+                <>
+                  <ListItemText className='capitalize' primary={item.name} secondary={`Quantity: ${item.quantity}`} primaryTypographyProps={{ fontWeight: "bold", fontSize: "20px" }} secondaryTypographyProps={{ color: "white" }} /><ListItemSecondaryAction>
+                    <IconButton edge="end" onClick={() => handleEditItem(item)}>
+                      <Edit className='text-white drop-shadow-md hover:scale-110 transition-transform' />
+                    </IconButton>
+                    <IconButton edge="end" onClick={() => deleteItem(item.id)}>
+                      <Delete className='text-white drop-shadow-md hover:scale-110 transition-transform' />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </>
+              )}
+            </ListItem>
+          ))}
+        </List>
 
-      </div>
-    </main>
+        {items.length > 0 && (
+          <div className='flex justify-end mt-4'>
+            <span>Total: {total}</span>
+          </div>
+        )}
+
+      </Container>
+    </div>
+
+
+
   );
 }
