@@ -24,6 +24,8 @@ export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   // read items from database
   useEffect(() => {
     const fetchItems = async () => {
@@ -67,7 +69,7 @@ export default function Home() {
   const handleEditItem = (item: Item) => {
     setEditItemId(item.id);
     setEditItem({ name: item.name, quantity: item.quantity.toString() })
-  }
+  };
 
   const saveEditItem = async (id: string) => {
     await updateDoc(doc(db, 'items', id), {
@@ -76,7 +78,11 @@ export default function Home() {
     });
     setEditItemId(null);
     setEditItem({ name: '', quantity: '' })
-  }
+  };
+
+  const filteredItems = items.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className='flex justify-center items-center min-h-[84vh] p-12'>
@@ -93,6 +99,37 @@ export default function Home() {
         </div>
 
         <h1 className='text-2xl text-center'>Pantry Tracker</h1>
+
+        <TextField
+          label="Search Items"
+          variant="outlined"
+          fullWidth
+          margin="dense"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{
+            '.MuiInputBase-input': {
+              color: 'white',
+            },
+            '& .MuiFormLabel-root': {
+              color: 'white',
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+              color: 'white'
+            },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: 'white',
+              },
+              '&:hover fieldset': {
+                borderColor: 'white',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: 'white',
+              }
+            },
+          }}
+        />
 
         <Dialog
           open={isModalOpen} onClose={() => setIsModalOpen(false)}
@@ -124,10 +161,9 @@ export default function Home() {
         </Dialog>
 
         <List>
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <ListItem className='flex items-center justify-between p-2' key={item.id}>
               {editItemId === item.id ? (
-
                 <div className='flex justify-center items-center gap-2 w-full'>
                   <TextField
                     label="Item Name"
@@ -141,6 +177,9 @@ export default function Home() {
                       '& .MuiFormLabel-root': {
                         color: 'white',
                       },
+                      '& .MuiFormLabel-root.Mui-focused': {
+                        color: 'white',
+                      },
                       '& .MuiOutlinedInput-root': {
                         '& fieldset': {
                           borderColor: 'white',
@@ -152,7 +191,9 @@ export default function Home() {
                           borderColor: 'white',
                         }
                       },
-                    }} /><TextField
+                    }}
+                  />
+                  <TextField
                     label="Quantity"
                     variant='outlined'
                     value={editItem.quantity}
@@ -164,6 +205,9 @@ export default function Home() {
                       '& .MuiFormLabel-root': {
                         color: 'white',
                       },
+                      '& .MuiFormLabel-root.Mui-focused': {
+                        color: 'white',
+                      },
                       '& .MuiOutlinedInput-root': {
                         '& fieldset': {
                           borderColor: 'white',
@@ -175,13 +219,16 @@ export default function Home() {
                           borderColor: 'white',
                         }
                       },
-                    }} /><IconButton onClick={() => saveEditItem(item.id)}>
+                    }}
+                  />
+                  <IconButton onClick={() => saveEditItem(item.id)}>
                     <Save className='text-white drop-shadow-md hover:scale-110 transition-transform' />
-                  </IconButton></div>
-
+                  </IconButton>
+                </div>
               ) : (
                 <>
-                  <ListItemText className='capitalize' primary={item.name} secondary={`Quantity: ${item.quantity}`} primaryTypographyProps={{ fontWeight: "bold", fontSize: "20px" }} secondaryTypographyProps={{ color: "white" }} /><ListItemSecondaryAction>
+                  <ListItemText className='capitalize' primary={item.name} secondary={`Quantity: ${item.quantity}`} primaryTypographyProps={{ fontWeight: "bold", fontSize: "20px" }} secondaryTypographyProps={{ color: "white" }} />
+                  <ListItemSecondaryAction>
                     <IconButton edge="end" onClick={() => handleEditItem(item)}>
                       <Edit className='text-white m-2 hover:scale-110 transition-transform' />
                     </IconButton>
