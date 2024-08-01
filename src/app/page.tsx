@@ -128,7 +128,7 @@ export default function Home() {
             <ListItem className='flex items-center justify-between p-2' key={item.id}>
               {editItemId === item.id ? (
 
-                <div className='flex items-center gap-2 w-full'>
+                <div className='flex justify-center items-center gap-2 w-full'>
                   <TextField
                     label="Item Name"
                     variant='outlined'
@@ -183,10 +183,10 @@ export default function Home() {
                 <>
                   <ListItemText className='capitalize' primary={item.name} secondary={`Quantity: ${item.quantity}`} primaryTypographyProps={{ fontWeight: "bold", fontSize: "20px" }} secondaryTypographyProps={{ color: "white" }} /><ListItemSecondaryAction>
                     <IconButton edge="end" onClick={() => handleEditItem(item)}>
-                      <Edit className='text-white drop-shadow-md hover:scale-110 transition-transform' />
+                      <Edit className='text-white m-2 hover:scale-110 transition-transform' />
                     </IconButton>
                     <IconButton edge="end" onClick={() => deleteItem(item.id)}>
-                      <Delete className='text-white drop-shadow-md hover:scale-110 transition-transform' />
+                      <Delete className='text-white m-2 drop-shadow-md hover:scale-110 transition-transform' />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </>
