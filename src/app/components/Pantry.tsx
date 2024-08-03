@@ -1,18 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { collection, addDoc, deleteDoc, query, onSnapshot, doc, updateDoc, writeBatch } from 'firebase/firestore';
-import { db } from '../../../firebaseConfig'
+import { collection, addDoc, deleteDoc, query, onSnapshot, doc, updateDoc, writeBatch, where } from 'firebase/firestore';
+import { db } from '../../../firebaseConfig';
 import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItem, IconButton, ListItemText, ListItemSecondaryAction, InputAdornment, Divider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Delete, Edit, Save, Search, DeleteForever } from '@mui/icons-material';
 import { Montserrat } from 'next/font/google';
+import { useAuth } from '../context/AuthContext';
 import '@/stylesheets/pantrytracker.css';
 
 const mont = Montserrat({
   subsets: ["latin"],
   weight: "700",
-})
+});
 
 type Item = {
   id: string,
@@ -22,18 +23,22 @@ type Item = {
 
 export default function Pantry() {
   const [items, setItems] = useState<Item[]>([]);
-  const [newItem, setNewItem] = useState<{ name: string, quantity: string }>({ name: '', quantity: '' })
+  const [newItem, setNewItem] = useState<{ name: string, quantity: string }>({ name: '', quantity: '' });
   const [total, setTotal] = useState(0);
-  const [editItem, setEditItem] = useState<{ name: string; quantity: string }>({ name: '', quantity: '' })
+  const [editItem, setEditItem] = useState<{ name: string; quantity: string }>({ name: '', quantity: '' });
   const [editItemId, setEditItemId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isClearDialogOpen, setIsClearDialogOpen] = useState(false);
 
-  // read items from database
+  const { user } = useAuth(); // Get the current user
+
+  // Read items from database
   useEffect(() => {
+    if (!user) return;
+
     const fetchItems = async () => {
-      const q = query(collection(db, 'items'));
+      const q = query(collection(db, 'items'), where('userId', '==', user.uid));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const itemsArray: Item[] = [];
         querySnapshot.forEach((doc) => {
@@ -47,27 +52,28 @@ export default function Pantry() {
     };
 
     fetchItems().catch(console.error);
-  }, []);
+  }, [user]);
 
-  // add items to database
+  // Add items to database
   const addItem = async (ev: React.FormEvent) => {
-    ev.preventDefault()
-    if (newItem.name !== '' && newItem.quantity !== '') {
+    ev.preventDefault();
+    if (newItem.name !== '' && newItem.quantity !== '' && user) {
       await addDoc(collection(db, 'items'), {
         name: newItem.name.trim(),
-        quantity: newItem.quantity
+        quantity: newItem.quantity,
+        userId: user.uid // Add userId to the item
       });
       setNewItem({ name: '', quantity: '' });
       setIsModalOpen(false);
     }
-  }
+  };
 
-  // delete items from database
+  // Delete items from database
   const deleteItem = async (id: string) => {
     await deleteDoc(doc(db, 'items', id));
-  }
+  };
 
-  // clear all items from database
+  // Clear all items from database
   const clearAllItems = async () => {
     const batch = writeBatch(db);
     items.forEach(item => {

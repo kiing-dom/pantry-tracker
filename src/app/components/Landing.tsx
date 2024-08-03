@@ -16,10 +16,10 @@ const Landing: React.FC = () => {
                 <div className="mb-4 flex justify-center">
                     <img src="/wreath.png" alt="Icon" className="w-36" />
                 </div>
-                <h1 className={`text-3xl font-bold mb-2 ${mont.className}`} style={{ color: '#333' }}>
+                <h1 className={`text-4xl font-bold mb-2 ${mont.className} text-black`}>
                     Pantry Tracker
                 </h1>
-                <h2 className="text-xl mb-4 italic" style={{ color: '#666' }}>
+                <h2 className="text-xl mb-4 italic font-semibold text-[#a8a5a5] ">
                     Sign In to Your Account
                 </h2>
                 
