@@ -89,7 +89,7 @@ export default function Pantry() {
         name: newItem.name.trim(),
         quantity: newItem.quantity,
         userId: user.uid,
-        expiryDate: newItem.expiryDate ? newItem.expiryDate : undefined
+        expiryDate: newItem.expiryDate ? newItem.expiryDate : null
       };
 
       if (imageUrl) {
