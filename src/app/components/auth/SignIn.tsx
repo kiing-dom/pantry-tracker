@@ -1,5 +1,4 @@
-import { GoogleAuthProvider } from "firebase/auth/web-extension"
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../../../firebaseConfig";
 import { Button } from "@mui/material";
 import { Google } from "@mui/icons-material";
