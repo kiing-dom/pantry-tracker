@@ -18,9 +18,14 @@ const SignIn = () => {
         <Button
             className="hover:scale-110 transition-transform"
             variant="contained"
-            color="primary"
             startIcon={<Google />}
             onClick={handleSignIn}
+            sx={{
+                backgroundColor: "black",
+                '&:hover': {
+                  backgroundColor: '#778899',
+                },
+              }}
         >
             Sign in with Google
         </Button>

@@ -28,8 +28,13 @@ const SignOut: React.FC = () => {
             <Button
                 className="hover:scale-110 transition-transform"
                 variant="contained"
-                color="secondary"
                 onClick={handleClickOpen}
+                sx={{
+                    backgroundColor: "black",
+                    '&:hover': {
+                      backgroundColor: '#778899',
+                    },
+                  }}
             >
                 Sign Out
             </Button>
@@ -50,7 +55,7 @@ const SignOut: React.FC = () => {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleSignOut} color="secondary">
+                    <Button onClick={handleSignOut} sx={{backgroundColor: '#9362FF'}}>
                         Sign Out
                     </Button>
                 </DialogActions>

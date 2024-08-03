@@ -3,7 +3,7 @@ import { GitHub, LinkedIn } from '@mui/icons-material';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="mt-auto p-1 bg-blue-500">
+    <footer className="mt-auto p-1 bg-black">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-center items-center space-x-4">
           <a 
