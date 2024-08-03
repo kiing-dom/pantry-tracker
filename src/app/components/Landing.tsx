@@ -10,7 +10,7 @@ const mont = Montserrat({
 const Landing: React.FC = () => {
     return (
         <div
-            className="bg-[url('http://cdn.backgroundhost.com/backgrounds/subtlepatterns/purty_wood.png')] bg-center h-[84vh] flex items-center justify-center"
+            className="bg-[url('/purty_wood.png')] bg-center h-[84vh] flex items-center justify-center"
         >
             <div className="relative max-w-md max-h-[40vh] h-full w-full p-4 sm:p-6 bg-white bg-opacity-20 backdrop-blur-md rounded-lg shadow-lg border border-gray-300 text-center">
                 <div className="mb-4 flex justify-center">
