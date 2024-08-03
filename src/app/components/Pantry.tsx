@@ -31,9 +31,9 @@ export default function Pantry() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isClearDialogOpen, setIsClearDialogOpen] = useState(false);
 
-  const { user } = useAuth(); // Get the current user
+  const { user } = useAuth(); 
 
-  // Read items from database
+
   useEffect(() => {
     if (!user) return;
 
@@ -54,7 +54,7 @@ export default function Pantry() {
     fetchItems().catch(console.error);
   }, [user]);
 
-  // Add items to database
+ 
   const addItem = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (newItem.name !== '' && newItem.quantity !== '' && user) {
@@ -68,12 +68,12 @@ export default function Pantry() {
     }
   };
 
-  // Delete items from database
+
   const deleteItem = async (id: string) => {
     await deleteDoc(doc(db, 'items', id));
   };
 
-  // Clear all items from database
+  
   const clearAllItems = async () => {
     const batch = writeBatch(db);
     items.forEach(item => {
@@ -104,7 +104,7 @@ export default function Pantry() {
 
   return (
     <div className='bg-[#F8F8FF] flex flex-col items-center min-h-[84vh] p-12'>
-      <h1 style={mont.style} className='pantry-tracker-title text-5xl text-center mb-6 sm:text-3xl md:4xl lg:text-5xl bg-slate-400 rounded-md p-4'><ArrowDownward /> Track Your Items <ArrowDownward /></h1>
+      <h1 style={mont.style} className='pantry-tracker-title text-xl text-center mb-6 sm:text-xl md:3xl lg:text-5xl bg-slate-400 rounded-md p-4'><ArrowDownward /> Track Your Items <ArrowDownward /></h1>
       <Container className='bg-neutral-500 w-[70%] rounded-lg drop-shadow-md outline-2 outline-double outline-black p-6'>
         <div className='flex flex-col items-center mt-4'>
 
@@ -124,37 +124,37 @@ export default function Pantry() {
             }}
             sx={{
               '.MuiInputBase-input': {
-                color: 'white', // Change text color to white
-                backgroundColor: '#333', // Background color of the input area
-                outline: 'none', // Ensure no outline on the input itself
+                color: 'white', 
+                backgroundColor: '#333', 
+                outline: 'none', 
               },
               '& .MuiFormLabel-root': {
-                color: 'white', // Change label color to white
+                color: 'white', 
               },
               '& .MuiFormLabel-root.Mui-focused': {
-                color: 'white', // Change label color when focused
+                color: 'white', 
               },
               '& .MuiOutlinedInput-root': {
-                backgroundColor: '#333', // Background color of the input field
+                backgroundColor: '#333',
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', // Border color of the outline
-                  borderWidth: '1px', // Ensure the border is visible
+                  borderColor: 'white', 
+                  borderWidth: '1px', 
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#333', // Border color when hovered
+                  borderColor: '#333', 
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', // Border color when focused
+                  borderColor: 'white', 
                 },
               },
               '& input:focus': {
-                outline: 'none', // Remove focus outline on input
+                outline: 'none', 
               },
               '&::before': {
-                outline: 'none', // Remove any default outline from pseudo-elements
+                outline: 'none', 
               },
               '&::after': {
-                outline: 'none', // Remove any default outline from pseudo-elements
+                outline: 'none', 
               },
             }}
           />
