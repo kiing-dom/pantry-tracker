@@ -98,7 +98,7 @@ export default function Home() {
 
   return (
     <div className='bg-[#FFFAFA] flex flex-col items-center min-h-[100vh] p-12'>
-      <h1 style={mont.style} className='pantry-tracker-title text-5xl text-center mb-6 sm:text-xl md:3xl lg:text-5xl'>Pantry Tracker 🍰</h1>
+      <h1 style={mont.style} className='pantry-tracker-title text-5xl text-center mb-6 sm:text-3xl md:4xl lg:text-5xl'>Pantry Tracker 🍰</h1>
       <Container className='bg-neutral-500 w-[70%] rounded-lg drop-shadow-md outline-2 outline-double outline-black p-6'>
         <div className='flex flex-col items-center mt-4'>
 
