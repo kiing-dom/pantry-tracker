@@ -1,0 +1,16 @@
+.expiry-date {
+    font-weight: bold;
+  }
+  
+  .expiry-date.expired {
+    color: red;
+  }
+  
+  .expiry-date.soon {
+    color: orange;
+  }
+  
+  .expiry-date.ok {
+    color: green;
+  }
+  
