@@ -104,7 +104,7 @@ export default function Pantry() {
 
   return (
     <div className='bg-[#F8F8FF] flex flex-col items-center min-h-[84vh] p-12'>
-      <h1 style={mont.style} className='pantry-tracker-title text-xl text-center mb-6 sm:text-xl md:3xl lg:text-5xl bg-slate-400 rounded-md p-4'><ArrowDownward /> Track Your Items <ArrowDownward /></h1>
+      <h1 style={mont.style} className='pantry-tracker-title text-xl text-center mb-6 sm:text-xl md:3xl lg:text-5xl bg-black rounded-md p-4'><ArrowDownward /> Track Your Items <ArrowDownward /></h1>
       <Container className='bg-neutral-500 w-[70%] rounded-lg drop-shadow-md outline-2 outline-double outline-black p-6'>
         <div className='flex flex-col items-center mt-4'>
 
@@ -165,7 +165,7 @@ export default function Pantry() {
               startIcon={<AddIcon />}
               onClick={() => setIsModalOpen(true)}
               sx={{
-                backgroundColor: '#9362FF',
+                backgroundColor: 'black',
                 '&:hover': {
                   backgroundColor: 'slategrey'
                 }
@@ -190,7 +190,6 @@ export default function Pantry() {
           </div>
         </div>
 
-        {/* Add New Item Dialog */}
         <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <DialogTitle>Add New Item</DialogTitle>
           <DialogContent>

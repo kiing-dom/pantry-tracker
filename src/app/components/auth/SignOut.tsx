@@ -55,7 +55,7 @@ const SignOut: React.FC = () => {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleSignOut} sx={{backgroundColor: '#9362FF'}}>
+                    <Button className='text-[#9362ff]' onClick={handleSignOut}>
                         Sign Out
                     </Button>
                 </DialogActions>

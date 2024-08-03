@@ -16,35 +16,39 @@ const Landing: React.FC = () => {
                 className="
                 relative
                 max-w-md
-                max-h-[40vh] 
-                h-full 
-                w-full 
-                p-4 
-                sm:p-6 
-                bg-white 
-                bg-opacity-20 
-                backdrop-blur-md 
-                rounded-lg 
-                shadow-lg 
-                border 
-                border-gray-300 
+                max-h-[40vh]
+                h-full
+                w-full
+                p-4
+                sm:p-6
+                bg-white
+                bg-opacity-20
+                backdrop-blur-md
+                rounded-lg
+                shadow-lg
+                border
+                border-gray-300
                 text-center
                 hover:scale-110 transition-transform
+                flex
+                items-center
                 "
             >
-                <div className="mb-4 flex justify-center">
-                    <img src="/wreath.png" alt="Icon" className="w-36" />
+                {/* Container for Icon and Text */}
+                <div className="flex items-center w-full">
+                    <img src="/chibi-bread.png" alt="Icon" className="w-36 mr-4" />
+
+                    {/* Text and SignIn Button Container */}
+                    <div className="flex flex-col w-full text-left">
+                        <h1 className={`text-4xl font-bold mb-2 ${mont.className} text-black`}>
+                            Pantry Tracker
+                        </h1>
+                        <h2 className="text-[14px] mb-4 italic font-semibold text-[#a8a5a5]">
+                            Smart Tracking For Your Pantry
+                        </h2>
+                        <SignIn />
+                    </div>
                 </div>
-                <h1 className={`text-4xl font-bold mb-2 ${mont.className} text-black`}>
-                    Pantry Tracker
-                </h1>
-                <h2 className="text-xl mb-4 italic font-semibold text-[#a8a5a5] ">
-                    Sign In to Your Account
-                </h2>
-
-                <SignIn />
-
-
             </div>
         </div>
     );

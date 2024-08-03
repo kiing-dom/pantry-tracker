@@ -13,7 +13,7 @@ const Header: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <header className="bg-[#9362FF]">
+    <header className="bg-neutral-600">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <h1 className={`text-2xl text-white ${mont.className} drop-shadow-md`}>Pantry Tracker™️</h1>
         <div>
