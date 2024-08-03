@@ -1,5 +1,4 @@
-import { GoogleAuthProvider } from "firebase/auth/web-extension"
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../../../firebaseConfig";
 import { Button } from "@mui/material";
 import { Google } from "@mui/icons-material";
@@ -19,9 +18,14 @@ const SignIn = () => {
         <Button
             className="hover:scale-110 transition-transform"
             variant="contained"
-            color="primary"
             startIcon={<Google />}
             onClick={handleSignIn}
+            sx={{
+                backgroundColor: "black",
+                '&:hover': {
+                  backgroundColor: '#778899',
+                },
+              }}
         >
             Sign in with Google
         </Button>

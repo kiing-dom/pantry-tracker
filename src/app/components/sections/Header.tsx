@@ -13,9 +13,9 @@ const Header: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <header className="bg-blue-500">
+    <header className="bg-[#9362FF]">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
-        <h1 className={`text-2xl text-white ${mont.className}`}>Pantry Tracker™️</h1>
+        <h1 className={`text-2xl text-white ${mont.className} drop-shadow-md`}>Pantry Tracker™️</h1>
         <div>
           {user ? (
             <SignOut />

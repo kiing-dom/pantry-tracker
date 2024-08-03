@@ -5,7 +5,7 @@ import { collection, addDoc, deleteDoc, query, onSnapshot, doc, updateDoc, write
 import { db } from '../../../firebaseConfig';
 import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItem, IconButton, ListItemText, ListItemSecondaryAction, InputAdornment, Divider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Delete, Edit, Save, Search, DeleteForever } from '@mui/icons-material';
+import { Delete, Edit, Save, Search, DeleteForever, ArrowDownward } from '@mui/icons-material';
 import { Montserrat } from 'next/font/google';
 import { useAuth } from '../context/AuthContext';
 import '@/stylesheets/pantrytracker.css';
@@ -103,8 +103,8 @@ export default function Pantry() {
   );
 
   return (
-    <div className='bg-[#F8F8FF] flex flex-col items-center min-h-[100vh] p-12'>
-      <h1 style={mont.style} className='pantry-tracker-title text-5xl text-center mb-6 sm:text-3xl md:4xl lg:text-5xl'>Pantry Tracker 🍰</h1>
+    <div className='bg-[#F8F8FF] flex flex-col items-center min-h-[84vh] p-12'>
+      <h1 style={mont.style} className='pantry-tracker-title text-5xl text-center mb-6 sm:text-3xl md:4xl lg:text-5xl bg-slate-400 rounded-md p-4'><ArrowDownward /> Track Your Items <ArrowDownward /></h1>
       <Container className='bg-neutral-500 w-[70%] rounded-lg drop-shadow-md outline-2 outline-double outline-black p-6'>
         <div className='flex flex-col items-center mt-4'>
 
@@ -124,24 +124,37 @@ export default function Pantry() {
             }}
             sx={{
               '.MuiInputBase-input': {
-                color: 'white',
+                color: 'white', // Change text color to white
+                backgroundColor: '#333', // Background color of the input area
+                outline: 'none', // Ensure no outline on the input itself
               },
               '& .MuiFormLabel-root': {
-                color: 'white',
+                color: 'white', // Change label color to white
               },
               '& .MuiFormLabel-root.Mui-focused': {
-                color: 'white'
+                color: 'white', // Change label color when focused
               },
               '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'white',
+                backgroundColor: '#333', // Background color of the input field
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white', // Border color of the outline
+                  borderWidth: '1px', // Ensure the border is visible
                 },
-                '&:hover fieldset': {
-                  borderColor: 'white',
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#333', // Border color when hovered
                 },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'white',
-                }
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white', // Border color when focused
+                },
+              },
+              '& input:focus': {
+                outline: 'none', // Remove focus outline on input
+              },
+              '&::before': {
+                outline: 'none', // Remove any default outline from pseudo-elements
+              },
+              '&::after': {
+                outline: 'none', // Remove any default outline from pseudo-elements
               },
             }}
           />
